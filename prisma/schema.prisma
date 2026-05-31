@@ -102,6 +102,7 @@ model Page {
   accessMode     AccessMode     @default(PUBLIC)
   privateToken   String         @default(uuid())
   status         PageStatus     @default(DRAFT)
+  // Users cannot be deleted while they have pages (RESTRICT by default)
   createdById    String
   createdBy      User           @relation(fields: [createdById], references: [id])
   createdAt      DateTime       @default(now())
