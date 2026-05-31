@@ -15,7 +15,6 @@ export default async function RandomPage() {
     where: { status: 'PUBLISHED', accessMode: 'PUBLIC' },
     take: 1,
     skip,
-    include: { category: true },
   })
   const page = pages[0]
   if (!page) notFound()
