@@ -113,7 +113,7 @@ function renderNode(node: JSONNode): string {
     }
 
     case 'flourish': {
-      const symbol = node.attrs?.symbol ? String(node.attrs.symbol) : '✦ ── ✦'
+      const symbol = escapeHtml(node.attrs?.symbol ? String(node.attrs.symbol) : '✦ ── ✦')
       return `<span data-flourish="">${symbol}</span>`
     }
 
