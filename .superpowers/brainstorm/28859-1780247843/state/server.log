@@ -1,0 +1,8 @@
+{"type":"server-started","port":61002,"host":"127.0.0.1","url_host":"localhost","url":"http://localhost:61002","screen_dir":"/Users/micahcooper/repos/affirmations/.superpowers/brainstorm/28859-1780247843/content","state_dir":"/Users/micahcooper/repos/affirmations/.superpowers/brainstorm/28859-1780247843/state"}
+{"type":"screen-added","file":"/Users/micahcooper/repos/affirmations/.superpowers/brainstorm/28859-1780247843/content/page-style.html"}
+{"source":"user-event","type":"click","text":"Today's Affirmation\n        \"You are worthy of every good thing coming your way.\"\n      \n    \n    \n      A — Full-screen immersive\n      Background fills the entire viewport. Text floats centered over it. No chrome, no UI — pure presence. Like a digital poster.","choice":"a","id":null,"timestamp":1780248985564}
+{"type":"screen-added","file":"/Users/micahcooper/repos/affirmations/.superpowers/brainstorm/28859-1780247843/content/waiting-1.html"}
+{"type":"screen-added","file":"/Users/micahcooper/repos/affirmations/.superpowers/brainstorm/28859-1780247843/content/url-routing.html"}
+{"type":"screen-added","file":"/Users/micahcooper/repos/affirmations/.superpowers/brainstorm/28859-1780247843/content/waiting-2.html"}
+{"type":"screen-added","file":"/Users/micahcooper/repos/affirmations/.superpowers/brainstorm/28859-1780247843/content/editor-layout.html"}
+{"type":"server-stopped","reason":"idle timeout"}

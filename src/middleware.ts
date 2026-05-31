@@ -20,5 +20,6 @@ export default withAuth(
 )
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  // Protect all /admin/* routes except the login page itself
+  matcher: ['/admin/((?!login).*)'],
 }

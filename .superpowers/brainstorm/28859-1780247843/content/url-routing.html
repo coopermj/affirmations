@@ -1,0 +1,83 @@
+<h2>URL & Routing Structure</h2>
+<p class="subtitle">How visitors and editors navigate the app</p>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 8px;">
+
+  <div>
+    <div class="label" style="margin-bottom: 12px;">Public Routes</div>
+
+    <div style="background: var(--surface); border-radius: 10px; overflow: hidden; border: 1px solid var(--border);">
+      <div style="padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; gap: 12px; align-items: flex-start;">
+        <code style="background: #22c55e22; color: #16a34a; padding: 2px 8px; border-radius: 4px; font-size: 12px; white-space: nowrap; flex-shrink: 0;">/[slug]</code>
+        <span style="font-size: 13px; color: var(--text-secondary);">Direct page — public or checks for <code>?t=token</code> if private</span>
+      </div>
+      <div style="padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; gap: 12px; align-items: flex-start;">
+        <code style="background: #22c55e22; color: #16a34a; padding: 2px 8px; border-radius: 4px; font-size: 12px; white-space: nowrap; flex-shrink: 0;">/c/[slug]</code>
+        <span style="font-size: 13px; color: var(--text-secondary);">Random published page from that category</span>
+      </div>
+      <div style="padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; gap: 12px; align-items: flex-start;">
+        <code style="background: #22c55e22; color: #16a34a; padding: 2px 8px; border-radius: 4px; font-size: 12px; white-space: nowrap; flex-shrink: 0;">/random</code>
+        <span style="font-size: 13px; color: var(--text-secondary);">Random published page from entire site</span>
+      </div>
+      <div style="padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start;">
+        <code style="background: #22c55e22; color: #16a34a; padding: 2px 8px; border-radius: 4px; font-size: 12px; white-space: nowrap; flex-shrink: 0;">/</code>
+        <span style="font-size: 13px; color: var(--text-secondary);">Redirects to <code>/random</code></span>
+      </div>
+    </div>
+
+    <div style="margin-top: 16px; padding: 12px 14px; background: #f59e0b11; border: 1px solid #f59e0b44; border-radius: 8px; font-size: 12px; color: var(--text-secondary);">
+      Private pages require <code>?t=[uuid]</code> — without the token they return a 404, not a 403, so their existence isn't revealed.
+    </div>
+  </div>
+
+  <div>
+    <div class="label" style="margin-bottom: 12px;">Admin Routes (auth-protected)</div>
+
+    <div style="background: var(--surface); border-radius: 10px; overflow: hidden; border: 1px solid var(--border);">
+      <div style="padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; gap: 12px; align-items: flex-start;">
+        <code style="background: #6366f122; color: #6366f1; padding: 2px 8px; border-radius: 4px; font-size: 12px; white-space: nowrap; flex-shrink: 0;">/admin</code>
+        <span style="font-size: 13px; color: var(--text-secondary);">Dashboard overview</span>
+      </div>
+      <div style="padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; gap: 12px; align-items: flex-start;">
+        <code style="background: #6366f122; color: #6366f1; padding: 2px 8px; border-radius: 4px; font-size: 12px; white-space: nowrap; flex-shrink: 0;">/admin/pages</code>
+        <span style="font-size: 13px; color: var(--text-secondary);">Page list — create, edit, delete, reorder</span>
+      </div>
+      <div style="padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; gap: 12px; align-items: flex-start;">
+        <code style="background: #6366f122; color: #6366f1; padding: 2px 8px; border-radius: 4px; font-size: 12px; white-space: nowrap; flex-shrink: 0;">/admin/pages/[id]</code>
+        <span style="font-size: 13px; color: var(--text-secondary);">WYSIWYG editor + settings panel + preview</span>
+      </div>
+      <div style="padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; gap: 12px; align-items: flex-start;">
+        <code style="background: #6366f122; color: #6366f1; padding: 2px 8px; border-radius: 4px; font-size: 12px; white-space: nowrap; flex-shrink: 4px; flex-shrink: 0;">/admin/backgrounds</code>
+        <span style="font-size: 13px; color: var(--text-secondary);">Upload &amp; manage background media</span>
+      </div>
+      <div style="padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; gap: 12px; align-items: flex-start;">
+        <code style="background: #6366f122; color: #6366f1; padding: 2px 8px; border-radius: 4px; font-size: 12px; white-space: nowrap; flex-shrink: 0;">/admin/fonts</code>
+        <span style="font-size: 13px; color: var(--text-secondary);">Google / uploaded / Adobe font management</span>
+      </div>
+      <div style="padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; gap: 12px; align-items: flex-start;">
+        <code style="background: #6366f122; color: #6366f1; padding: 2px 8px; border-radius: 4px; font-size: 12px; white-space: nowrap; flex-shrink: 0;">/admin/categories</code>
+        <span style="font-size: 13px; color: var(--text-secondary);">Create &amp; organize categories</span>
+      </div>
+      <div style="padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start;">
+        <code style="background: #6366f122; color: #6366f1; padding: 2px 8px; border-radius: 4px; font-size: 12px; white-space: nowrap; flex-shrink: 0;">/admin/users</code>
+        <span style="font-size: 13px; color: var(--text-secondary);">Admin only — create &amp; manage editor accounts</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div style="margin-top: 24px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px;">
+  <div class="label" style="margin-bottom: 10px;">NFC Tag → Page Flow</div>
+  <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 13px;">
+    <span style="padding: 6px 12px; background: #0ea5e922; color: #0284c7; border-radius: 6px; font-family: monospace;">NFC tag URL</span>
+    <span style="color: var(--text-secondary);">→</span>
+    <span style="padding: 6px 12px; background: #22c55e22; color: #16a34a; border-radius: 6px; font-family: monospace;">/[slug]</span>
+    <span style="color: var(--text-secondary);">or</span>
+    <span style="padding: 6px 12px; background: #22c55e22; color: #16a34a; border-radius: 6px; font-family: monospace;">/c/[slug]</span>
+    <span style="color: var(--text-secondary);">or</span>
+    <span style="padding: 6px 12px; background: #22c55e22; color: #16a34a; border-radius: 6px; font-family: monospace;">/random</span>
+    <span style="color: var(--text-secondary);">→</span>
+    <span style="padding: 6px 12px; background: #a855f722; color: #9333ea; border-radius: 6px;">Full-screen affirmation page</span>
+  </div>
+</div>
