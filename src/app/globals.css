@@ -25,3 +25,26 @@ body {
     text-wrap: balance;
   }
 }
+
+.affirmation-content {
+  color: white;
+  text-align: center;
+  max-width: 640px;
+  font-size: 1.5rem;
+  line-height: 1.7;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.affirmation-content p {
+  margin: 0 0 0.5rem;
+}
+
+.affirmation-content p:last-child {
+  margin-bottom: 0;
+}
+
+[data-flourish] {
+  display: inline-block;
+  margin: 0 0.25rem;
+  opacity: 0.8;
+}
