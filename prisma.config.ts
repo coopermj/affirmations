@@ -18,6 +18,9 @@ if (fs.existsSync(envLocal)) {
 }
 
 export default defineConfig({
+  migrations: {
+    seed: "ts-node --project tsconfig.seed.json prisma/seed.ts",
+  },
   datasource: {
     url: process.env.DATABASE_URL,
   },
