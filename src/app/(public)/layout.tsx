@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { db } from '@/lib/db'
 import { FontLoader } from '@/components/FontLoader'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Affirmations',
 }
