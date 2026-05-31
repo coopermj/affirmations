@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+}
+
+enum FontType {
+  GOOGLE
+  UPLOADED
+  ADOBE
+}
+
+enum BackgroundMode {
+  SPECIFIC
+  CATEGORY_RANDOM
+  DOMAIN_RANDOM
+}
+
+enum AccessMode {
+  PUBLIC
+  PRIVATE
+}
+
+enum PageStatus {
+  DRAFT
+  PUBLISHED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  role         Role     @default(EDITOR)
+  createdAt    DateTime @default(now())
+  pages        Page[]
+}
+
+model Category {
+  id          String               @id @default(cuid())
+  name        String
+  slug        String               @unique
+  parentId    String?
+  parent      Category?            @relation("CategoryChildren", fields: [parentId], references: [id])
+  children    Category[]           @relation("CategoryChildren")
+  pages       Page[]
+  backgrounds BackgroundCategory[]
+  createdAt   DateTime             @default(now())
+}
+
+model Background {
+  id         String               @id @default(cuid())
+  filename   String
+  r2Url      String
+  mimeType   String
+  isAnimated Boolean              @default(false)
+  createdAt  DateTime             @default(now())
+  pages      Page[]
+  categories BackgroundCategory[]
+}
+
+model BackgroundCategory {
+  backgroundId String
+  categoryId   String
+  background   Background @relation(fields: [backgroundId], references: [id], onDelete: Cascade)
+  category     Category   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([backgroundId, categoryId])
+}
+
+model Font {
+  id           String   @id @default(cuid())
+  name         String
+  type         FontType
+  googleFamily String?
+  r2Url        String?
+  createdAt    DateTime @default(now())
+}
+
+model SiteSettings {
+  id             String  @id @default("singleton")
+  adobeEmbedCode String?
+}
+
+model Page {
+  id             String         @id @default(cuid())
+  slug           String         @unique
+  title          String
+  content        Json
+  categoryId     String?
+  category       Category?      @relation(fields: [categoryId], references: [id])
+  backgroundMode BackgroundMode @default(DOMAIN_RANDOM)
+  backgroundId   String?
+  background     Background?    @relation(fields: [backgroundId], references: [id])
+  accessMode     AccessMode     @default(PUBLIC)
+  privateToken   String         @default(uuid())
+  status         PageStatus     @default(DRAFT)
+  createdById    String
+  createdBy      User           @relation(fields: [createdById], references: [id])
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+}
