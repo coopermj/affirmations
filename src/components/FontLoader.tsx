@@ -8,7 +8,7 @@ interface Props {
 export function FontLoader({ fonts, adobeEmbedCode }: Props) {
   const googleFamilies = fonts
     .filter(f => f.type === 'GOOGLE' && f.googleFamily)
-    .map(f => encodeURIComponent(f.googleFamily!))
+    .map(f => f.googleFamily!.replace(/ /g, '+'))
 
   const uploadedFonts = fonts.filter(f => f.type === 'UPLOADED' && f.r2Url)
 
