@@ -36,9 +36,9 @@ Affirmation pages are full-screen and immersive — the background fills the ent
 ### Page
 - `id`, `slug` (URL-safe, unique), `title` (internal label)
 - `content` — Tiptap ProseMirror JSON
-- `categoryId` — FK to Category
+- `categoryId` — nullable FK to Category
 - `backgroundMode` — `specific | category_random | domain_random`
-- `backgroundId` — FK to Background (only used when `backgroundMode = specific`)
+- `backgroundId` — nullable FK to Background (only used when `backgroundMode = specific`)
 - `accessMode` — `public | private`
 - `privateToken` — UUID (only used when `accessMode = private`)
 - `status` — `draft | published`
@@ -47,7 +47,7 @@ Affirmation pages are full-screen and immersive — the background fills the ent
 
 ### Category
 - `id`, `name`, `slug`
-- `parentId` — optional FK to Category (for super-category grouping)
+- `parentId` — optional FK to Category; one level of nesting only (a category's parent cannot itself have a parent)
 
 ### Background
 - `id`, `filename`, `r2Url`, `mimeType`, `isAnimated`
@@ -58,7 +58,10 @@ Affirmation pages are full-screen and immersive — the background fills the ent
 - `id`, `name`, `type` — `google | uploaded | adobe`
 - `googleFamily` — Google Fonts family name (type = google)
 - `r2Url` — R2 path to font file (type = uploaded)
-- `adobeEmbedCode` — Adobe Fonts project embed code (type = adobe; site-wide, admin-only)
+- For `type = adobe`: the font name is stored here so it appears in the editor picker; the embed code is stored separately in `SiteSettings`
+
+### SiteSettings (single-row config table)
+- `adobeEmbedCode` — Adobe Fonts project embed code; injected into every page `<head>`; null until set by admin
 
 ### User
 - `id`, `email`, `name`, `passwordHash`
