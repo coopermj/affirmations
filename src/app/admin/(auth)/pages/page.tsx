@@ -60,7 +60,16 @@ export default async function PagesPage() {
                     {page.title}
                   </Link>
                 </td>
-                <td className="px-4 py-2 text-gray-500 font-mono text-xs">/{page.slug}</td>
+                <td className="px-4 py-2 text-gray-500 font-mono text-xs">
+                  <a
+                    href={`/${page.slug}${page.accessMode === 'PRIVATE' ? `?t=${page.privateToken}` : ''}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-indigo-600 hover:underline"
+                  >
+                    /{page.slug}
+                  </a>
+                </td>
                 <td className="px-4 py-2 text-gray-500">{page.category?.name ?? '—'}</td>
                 <td className="px-4 py-2">
                   <span className={`inline-flex px-2 py-0.5 rounded text-xs font-medium ${STATUS_STYLES[page.status]}`}>
@@ -73,6 +82,14 @@ export default async function PagesPage() {
                   </span>
                 </td>
                 <td className="px-4 py-2 text-right flex gap-3 justify-end items-center">
+                  <a
+                    href={`/${page.slug}${page.accessMode === 'PRIVATE' ? `?t=${page.privateToken}` : ''}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-600 hover:text-gray-900 text-xs"
+                  >
+                    View ↗
+                  </a>
                   <Link
                     href={`/admin/pages/${page.id}`}
                     className="text-indigo-600 hover:text-indigo-800 text-xs"

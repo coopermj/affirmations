@@ -141,6 +141,14 @@ export function PageEditor({ page, categories, backgrounds, fonts }: Props) {
         <Link href="/admin/pages" className="text-gray-500 hover:text-gray-700">← Pages</Link>
         <span className="text-gray-300">/</span>
         <span className="font-medium text-gray-700 truncate">{settings.title || settings.slug}</span>
+        <a
+          href={`/${page.slug}${page.accessMode === 'PRIVATE' ? `?t=${page.privateToken}` : ''}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ml-auto shrink-0 px-2.5 py-1 border border-gray-300 rounded text-gray-600 hover:bg-gray-50 text-xs"
+        >
+          View ↗
+        </a>
       </div>
 
       {/* Two-panel layout */}
