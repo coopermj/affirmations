@@ -1,26 +1,22 @@
-import { withAuth } from 'next-auth/middleware'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { getToken } from 'next-auth/jwt'
 
-export default withAuth(
-  function middleware(req) {
-    const pathname = req.nextUrl.pathname
-    const role = req.nextauth.token?.role
+export async function middleware(req: NextRequest) {
+  const token = await getToken({ req })
+  const { pathname } = req.nextUrl
 
-    if (pathname.startsWith('/admin/users') && role !== 'ADMIN') {
-      return NextResponse.redirect(new URL('/admin', req.url))
-    }
+  if (!token) {
+    const loginUrl = new URL('/admin/login', req.url)
+    loginUrl.searchParams.set('callbackUrl', pathname)
+    return NextResponse.redirect(loginUrl)
+  }
 
-    return NextResponse.next()
-  },
-  {
-    callbacks: {
-      authorized: ({ token }) => !!token,
-    },
-    pages: {
-      signIn: '/admin/login',
-    },
-  },
-)
+  if (pathname.startsWith('/admin/users') && token.role !== 'ADMIN') {
+    return NextResponse.redirect(new URL('/admin', req.url))
+  }
+
+  return NextResponse.next()
+}
 
 export const config = {
   // Protect all /admin/* routes except the login page itself
