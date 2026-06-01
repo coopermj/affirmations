@@ -37,8 +37,8 @@ export async function saveBackground(
 
 export async function deleteBackground(id: string, r2Key: string) {
   await requireEditor()
-  await deleteR2Object(r2Key)
   await db.background.delete({ where: { id } })
+  await deleteR2Object(r2Key)
   revalidatePath('/admin/backgrounds')
 }
 
