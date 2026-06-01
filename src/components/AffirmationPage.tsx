@@ -4,38 +4,49 @@ interface Props {
   defaultFontFamily: string | null
 }
 
-export function AffirmationPage({ html, backgroundUrl, defaultFontFamily }: Props) {
-  const background = backgroundUrl
-    ? { backgroundImage: `url("${backgroundUrl}")` }
-    : { background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)' }
+// Warm "last light" gradient for pages without a specific image.
+const FALLBACK_GRADIENT =
+  'radial-gradient(120% 120% at 50% 0%, #8a4b38 0%, #5e3550 45%, #2c2236 100%)'
 
+export function AffirmationPage({ html, backgroundUrl, defaultFontFamily }: Props) {
   return (
-    <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        ...background,
-      }}
-    >
+    <div className="fixed inset-0 overflow-hidden">
+      {/* Background layer */}
       <div
-        style={{
-          position: 'fixed',
-          inset: 0,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '2rem',
-          fontFamily: defaultFontFamily ?? 'Georgia, serif',
-        }}
-      >
+        className="absolute inset-0 bg-cover bg-center"
+        style={
+          backgroundUrl
+            ? { backgroundImage: `url("${backgroundUrl}")` }
+            : { background: FALLBACK_GRADIENT }
+        }
+      />
+
+      {/* Legibility scrim — subtle vignette + center darkening over imagery */}
+      {backgroundUrl && (
         <div
-          className="affirmation-content"
+          className="absolute inset-0"
+          style={{
+            background:
+              'radial-gradient(110% 90% at 50% 50%, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.45) 100%)',
+          }}
+        />
+      )}
+
+      {/* Content */}
+      <div className="absolute inset-0 flex items-center justify-center px-6 sm:px-10">
+        <div
+          className="affirmation-content animate-[fadein_1.1s_ease-out]"
+          style={defaultFontFamily ? { fontFamily: defaultFontFamily } : undefined}
           dangerouslySetInnerHTML={{ __html: html }}
         />
       </div>
+
+      <style
+        dangerouslySetInnerHTML={{
+          __html:
+            '@keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}',
+        }}
+      />
     </div>
   )
 }

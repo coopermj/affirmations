@@ -21,7 +21,7 @@ export default async function PagesPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-semibold text-gray-900">Pages</h1>
+        <h1 className="font-display text-3xl font-medium text-ink">Pages</h1>
         <form action={createPage} className="flex">
           <input
             name="slug"
@@ -33,7 +33,7 @@ export default async function PagesPage() {
           />
           <button
             type="submit"
-            className="px-3 py-1.5 bg-indigo-600 text-white rounded-r text-sm hover:bg-indigo-700"
+            className="px-3 py-1.5 bg-clay-500 text-white rounded-r text-sm hover:bg-clay-600"
           >
             + New page
           </button>
@@ -56,7 +56,7 @@ export default async function PagesPage() {
             {pages.map(page => (
               <tr key={page.id} className="hover:bg-gray-50">
                 <td className="px-4 py-2 font-medium text-gray-900">
-                  <Link href={`/admin/pages/${page.id}`} className="hover:text-indigo-600">
+                  <Link href={`/admin/pages/${page.id}`} className="hover:text-clay-600">
                     {page.title}
                   </Link>
                 </td>
@@ -65,7 +65,7 @@ export default async function PagesPage() {
                     href={`/${page.slug}${page.accessMode === 'PRIVATE' ? `?t=${page.privateToken}` : ''}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-indigo-600 hover:underline"
+                    className="hover:text-clay-600 hover:underline"
                   >
                     /{page.slug}
                   </a>
@@ -92,7 +92,7 @@ export default async function PagesPage() {
                   </a>
                   <Link
                     href={`/admin/pages/${page.id}`}
-                    className="text-indigo-600 hover:text-indigo-800 text-xs"
+                    className="text-clay-600 hover:text-clay-700 text-xs"
                   >
                     Edit
                   </Link>

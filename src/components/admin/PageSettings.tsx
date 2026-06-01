@@ -38,7 +38,7 @@ export function PageSettings({
   onChange,
   onSave,
 }: Props) {
-  const field = 'w-full px-2 py-1.5 border border-gray-300 rounded text-sm text-gray-900 focus:outline-none focus:ring-1 focus:ring-indigo-400'
+  const field = 'w-full px-2 py-1.5 border border-gray-300 rounded text-sm text-gray-900 focus:outline-none focus:ring-1 focus:ring-clay-400'
   const label = 'block text-xs font-medium text-gray-500 mb-1'
 
   return (
@@ -61,7 +61,7 @@ export function PageSettings({
           <input
             value={slug}
             onChange={e => onChange({ slug: e.target.value })}
-            className="flex-1 px-2 py-1.5 border border-gray-300 rounded-r text-sm font-mono text-gray-900 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+            className="flex-1 px-2 py-1.5 border border-gray-300 rounded-r text-sm font-mono text-gray-900 focus:outline-none focus:ring-1 focus:ring-clay-400"
           />
         </div>
       </div>
@@ -148,7 +148,7 @@ export function PageSettings({
         <button
           onClick={onSave}
           disabled={saving}
-          className="w-full py-1.5 bg-indigo-600 text-white rounded text-sm font-medium hover:bg-indigo-700 disabled:opacity-50 transition-colors"
+          className="w-full py-1.5 bg-clay-500 text-white rounded text-sm font-medium hover:bg-clay-600 disabled:opacity-50 transition-colors"
         >
           Save
         </button>

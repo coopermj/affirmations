@@ -90,7 +90,7 @@ export function BackgroundUploader({ categories }: Props) {
         <button
           onClick={handleUpload}
           disabled={!file || uploading}
-          className="px-3 py-1.5 bg-indigo-600 text-white rounded text-sm hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-3 py-1.5 bg-clay-500 text-white rounded text-sm hover:bg-clay-600 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {uploading ? 'Uploading…' : 'Upload'}
         </button>

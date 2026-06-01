@@ -33,7 +33,7 @@ export function EditorToolbar({ editor, fonts, onPreview }: Props) {
 
   const btn = (active: boolean) =>
     `px-2 py-1 rounded text-sm transition-colors ${
-      active ? 'bg-indigo-100 text-indigo-700' : 'text-gray-700 hover:bg-gray-200'
+      active ? 'bg-clay-100 text-clay-700' : 'text-gray-700 hover:bg-gray-200'
     }`
 
   return (
@@ -133,7 +133,7 @@ export function EditorToolbar({ editor, fonts, onPreview }: Props) {
       <div className="relative">
         <button
           onMouseDown={e => { e.preventDefault(); setShowFlourish(v => !v) }}
-          className={btn(showFlourish) + ' text-indigo-600 text-xs'}
+          className={btn(showFlourish) + ' text-clay-600 text-xs'}
         >
           ✦ Flourish
         </button>

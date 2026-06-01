@@ -19,7 +19,7 @@ export default async function FontsPage() {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-2xl font-semibold text-gray-900">Fonts</h1>
+      <h1 className="font-display text-3xl font-medium text-ink">Fonts</h1>
 
       <section>
         <h2 className="text-lg font-medium text-gray-800 mb-3">Google Fonts</h2>
@@ -30,7 +30,7 @@ export default async function FontsPage() {
             required
             className="px-3 py-1.5 border border-gray-300 rounded text-sm flex-1"
           />
-          <button type="submit" className="px-3 py-1.5 bg-indigo-600 text-white rounded text-sm hover:bg-indigo-700">
+          <button type="submit" className="px-3 py-1.5 bg-clay-500 text-white rounded text-sm hover:bg-clay-600">
             Add
           </button>
         </form>
@@ -63,7 +63,7 @@ export default async function FontsPage() {
                 placeholder="https://use.typekit.net/abc.css"
                 className="px-3 py-1.5 border border-gray-300 rounded text-sm flex-1"
               />
-              <button type="submit" className="px-3 py-1.5 bg-indigo-600 text-white rounded text-sm hover:bg-indigo-700">
+              <button type="submit" className="px-3 py-1.5 bg-clay-500 text-white rounded text-sm hover:bg-clay-600">
                 Save
               </button>
             </form>
@@ -77,7 +77,7 @@ export default async function FontsPage() {
                 required
                 className="px-3 py-1.5 border border-gray-300 rounded text-sm flex-1"
               />
-              <button type="submit" className="px-3 py-1.5 bg-indigo-600 text-white rounded text-sm hover:bg-indigo-700">
+              <button type="submit" className="px-3 py-1.5 bg-clay-500 text-white rounded text-sm hover:bg-clay-600">
                 Add
               </button>
             </form>

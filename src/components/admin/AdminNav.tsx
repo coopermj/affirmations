@@ -21,21 +21,22 @@ export function AdminNav({ role }: Props) {
   ]
 
   return (
-    <nav className="w-52 bg-white border-r border-gray-200 flex flex-col shrink-0">
-      <div className="px-4 py-4 border-b border-gray-200">
-        <span className="text-indigo-600 font-semibold text-sm">Affirmations</span>
+    <nav className="w-56 bg-surface border-r border-line flex flex-col shrink-0">
+      <div className="px-5 py-5 border-b border-line">
+        <span className="font-display text-lg italic text-clay-600">Affirmations</span>
+        <p className="text-[11px] text-muted tracking-wide mt-0.5">Admin</p>
       </div>
-      <div className="flex-1 py-2">
+      <div className="flex-1 py-3 px-2 space-y-0.5">
         {items.map(item => {
           const active = item.exact ? pathname === item.href : pathname.startsWith(item.href)
           return (
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center px-4 py-2 text-sm ${
+              className={`flex items-center px-3 py-2 rounded-lg text-sm transition-colors ${
                 active
-                  ? 'bg-indigo-50 text-indigo-700 font-medium'
-                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  ? 'bg-clay-50 text-clay-700 font-medium'
+                  : 'text-muted hover:bg-paper hover:text-ink'
               }`}
             >
               {item.label}
@@ -43,10 +44,10 @@ export function AdminNav({ role }: Props) {
           )
         })}
       </div>
-      <div className="p-4 border-t border-gray-200">
+      <div className="p-4 border-t border-line">
         <button
           onClick={() => signOut({ callbackUrl: '/admin/login' })}
-          className="text-xs text-gray-500 hover:text-gray-700"
+          className="text-xs text-muted hover:text-ink transition-colors"
         >
           Sign out
         </button>

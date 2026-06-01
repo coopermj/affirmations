@@ -8,7 +8,7 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
   if (!session) redirect('/admin/login')
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-paper">
       <AdminNav role={session.user.role} />
       <main className="flex-1 p-8 overflow-auto">
         {children}

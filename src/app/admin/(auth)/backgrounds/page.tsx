@@ -16,7 +16,7 @@ export default async function BackgroundsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold text-gray-900 mb-6">Backgrounds</h1>
+      <h1 className="font-display text-3xl font-medium text-ink mb-6">Backgrounds</h1>
 
       {!r2Ready && (
         <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">

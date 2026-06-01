@@ -11,7 +11,7 @@ export default async function CategoriesPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold text-gray-900 mb-6">Categories</h1>
+      <h1 className="font-display text-3xl font-medium text-ink mb-6">Categories</h1>
 
       <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6">
         <h2 className="text-sm font-medium text-gray-700 mb-3">Add category</h2>
@@ -41,7 +41,7 @@ export default async function CategoriesPage() {
           </select>
           <button
             type="submit"
-            className="px-3 py-1.5 bg-indigo-600 text-white rounded text-sm hover:bg-indigo-700"
+            className="px-3 py-1.5 bg-clay-500 text-white rounded text-sm hover:bg-clay-600"
           >
             Add
           </button>

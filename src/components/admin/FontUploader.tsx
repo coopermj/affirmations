@@ -58,7 +58,7 @@ export function FontUploader() {
       <button
         onClick={handleUpload}
         disabled={!file || !name.trim() || uploading}
-        className="px-3 py-1.5 bg-indigo-600 text-white rounded text-sm hover:bg-indigo-700 disabled:opacity-50"
+        className="px-3 py-1.5 bg-clay-500 text-white rounded text-sm hover:bg-clay-600 disabled:opacity-50"
       >
         {uploading ? 'Uploading…' : 'Upload font'}
       </button>

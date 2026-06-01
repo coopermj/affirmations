@@ -18,7 +18,7 @@ export default function AdminError({
       )}
       <button
         onClick={reset}
-        className="px-3 py-1.5 bg-indigo-600 text-white rounded text-sm hover:bg-indigo-700"
+        className="px-3 py-1.5 bg-clay-500 text-white rounded text-sm hover:bg-clay-600"
       >
         Try again
       </button>
