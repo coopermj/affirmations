@@ -103,7 +103,9 @@ function renderNode(node: JSONNode): string {
 
     case 'paragraph': {
       const inner = (node.content ?? []).map(renderNode).join('')
-      return `<p>${inner}</p>`
+      const align = node.attrs?.textAlign
+      const style = align && align !== 'left' ? ` style="text-align: ${align}"` : ''
+      return `<p${style}>${inner}</p>`
     }
 
     case 'text': {
@@ -121,7 +123,9 @@ function renderNode(node: JSONNode): string {
       const level = node.attrs?.level ?? 1
       const tag = `h${level}`
       const inner = (node.content ?? []).map(renderNode).join('')
-      return `<${tag}>${inner}</${tag}>`
+      const align = node.attrs?.textAlign
+      const style = align && align !== 'left' ? ` style="text-align: ${align}"` : ''
+      return `<${tag}${style}>${inner}</${tag}>`
     }
 
     case 'bulletList':

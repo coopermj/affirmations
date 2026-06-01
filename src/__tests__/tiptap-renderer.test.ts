@@ -76,4 +76,36 @@ describe('renderContent', () => {
     expect(html).toContain('✦ ── ✦')
     expect(html).toContain('data-flourish')
   })
+
+  it('renders paragraph with textAlign attribute', () => {
+    const json = {
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          attrs: { textAlign: 'center' },
+          content: [{ type: 'text', text: 'Centered' }],
+        },
+      ],
+    }
+    const html = renderContent(json)
+    expect(html).toContain('style="text-align: center"')
+    expect(html).toContain('Centered')
+  })
+
+  it('does not add style for default left alignment', () => {
+    const json = {
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          attrs: { textAlign: 'left' },
+          content: [{ type: 'text', text: 'Left' }],
+        },
+      ],
+    }
+    const html = renderContent(json)
+    expect(html).not.toContain('style=')
+    expect(html).toContain('<p>')
+  })
 })
