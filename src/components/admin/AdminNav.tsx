@@ -25,6 +25,7 @@ export function AdminNav({ role }: Props) {
     { href: '/admin/backgrounds', label: 'Backgrounds', exact: false },
     { href: '/admin/fonts', label: 'Fonts', exact: false },
     ...(role === 'ADMIN' ? [{ href: '/admin/users', label: 'Users', exact: false }] : []),
+    { href: '/admin/account', label: 'Account', exact: false },
   ]
 
   const links = (
