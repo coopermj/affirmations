@@ -16,7 +16,7 @@ export default async function UsersPage() {
 
       <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6">
         <h2 className="text-sm font-medium text-gray-700 mb-3">Add user</h2>
-        <form action={createUser} className="grid grid-cols-2 gap-2">
+        <form action={createUser} className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <input
             name="name"
             placeholder="Name"
@@ -53,8 +53,8 @@ export default async function UsersPage() {
         </form>
       </div>
 
-      <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-        <table className="w-full text-sm">
+      <div className="bg-surface border border-line rounded-lg overflow-x-auto">
+        <table className="w-full min-w-[640px] text-sm">
           <thead className="bg-gray-50 border-b border-gray-200">
             <tr>
               <th className="text-left px-4 py-2 text-gray-600 font-medium">Name</th>

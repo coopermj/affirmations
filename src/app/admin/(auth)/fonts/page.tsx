@@ -98,8 +98,8 @@ function FontList({
 }) {
   if (fonts.length === 0) return <p className="text-sm text-gray-400">None yet.</p>
   return (
-    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-      <table className="w-full text-sm">
+    <div className="bg-surface border border-line rounded-lg overflow-x-auto">
+      <table className="w-full min-w-[640px] text-sm">
         <tbody className="divide-y divide-gray-100">
           {fonts.map(f => (
             <tr key={f.id} className="hover:bg-gray-50">

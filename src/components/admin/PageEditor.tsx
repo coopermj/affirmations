@@ -154,10 +154,10 @@ export function PageEditor({ page, categories, backgrounds, fonts }: Props) {
         </a>
       </div>
 
-      {/* Two-panel layout */}
-      <div className="flex gap-4 items-start">
-        {/* Left: editor */}
-        <div className="flex-1 min-w-0 border border-gray-200 rounded-lg overflow-hidden bg-white">
+      {/* Two-panel layout: stacked on mobile, side-by-side on desktop */}
+      <div className="flex flex-col lg:flex-row gap-4 items-stretch lg:items-start">
+        {/* Editor */}
+        <div className="flex-1 min-w-0 border border-line rounded-lg overflow-hidden bg-surface">
           {editor && (
             <EditorToolbar
               editor={editor}
@@ -168,8 +168,8 @@ export function PageEditor({ page, categories, backgrounds, fonts }: Props) {
           <EditorContent editor={editor} />
         </div>
 
-        {/* Right: settings */}
-        <div className="w-64 shrink-0 border border-gray-200 rounded-lg overflow-hidden bg-white">
+        {/* Settings */}
+        <div className="w-full lg:w-64 shrink-0 border border-line rounded-lg overflow-hidden bg-surface">
           <PageSettings
             {...settings}
             privateToken={page.privateToken}

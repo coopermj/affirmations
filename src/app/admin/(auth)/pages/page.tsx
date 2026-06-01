@@ -20,7 +20,7 @@ export default async function PagesPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
         <h1 className="font-display text-3xl font-medium text-ink">Pages</h1>
         <form action={createPage} className="flex">
           <input
@@ -40,8 +40,8 @@ export default async function PagesPage() {
         </form>
       </div>
 
-      <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-        <table className="w-full text-sm">
+      <div className="bg-surface border border-line rounded-lg overflow-x-auto">
+        <table className="w-full min-w-[640px] text-sm">
           <thead className="bg-gray-50 border-b border-gray-200">
             <tr>
               <th className="text-left px-4 py-2 text-gray-600 font-medium">Title</th>
