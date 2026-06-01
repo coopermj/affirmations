@@ -48,6 +48,14 @@ const EXTENSIONS = [
 
 const GRADIENT_BG = 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)'
 
+// ProseMirror node attrs use null-prototype objects, which Next.js Server
+// Actions reject ("Only plain objects ... can be passed"). Round-tripping
+// through JSON normalizes the whole tree to plain objects before it crosses
+// the client → server boundary.
+function toPlainJSON(value: unknown): Record<string, unknown> {
+  return JSON.parse(JSON.stringify(value))
+}
+
 export function PageEditor({ page, categories, backgrounds, fonts }: Props) {
   const [settings, setSettings] = useState<Settings>({
     title: page.title,
@@ -83,7 +91,7 @@ export function PageEditor({ page, categories, backgrounds, fonts }: Props) {
         try {
           await savePage(page.id, {
             ...settingsRef.current,
-            content: ed.getJSON() as Record<string, unknown>,
+            content: toPlainJSON(ed.getJSON()),
           })
           setSaved(true)
         } catch (err) {
@@ -108,7 +116,7 @@ export function PageEditor({ page, categories, backgrounds, fonts }: Props) {
     try {
       await savePage(page.id, {
         ...settings,
-        content: editor.getJSON() as Record<string, unknown>,
+        content: toPlainJSON(editor.getJSON()),
       })
       setSaved(true)
     } catch (err) {
