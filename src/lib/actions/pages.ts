@@ -31,3 +31,34 @@ export async function createPage(formData: FormData) {
   })
   redirect(`/admin/pages/${page.id}`)
 }
+
+export async function savePage(
+  id: string,
+  data: {
+    title: string
+    slug: string
+    content: Record<string, unknown>
+    categoryId: string | null
+    backgroundMode: 'SPECIFIC' | 'CATEGORY_RANDOM' | 'DOMAIN_RANDOM'
+    backgroundId: string | null
+    accessMode: 'PUBLIC' | 'PRIVATE'
+    status: 'DRAFT' | 'PUBLISHED'
+  },
+) {
+  await requireEditor()
+  await db.page.update({
+    where: { id },
+    data: {
+      title: data.title,
+      slug: data.slug,
+      content: data.content as never,
+      categoryId: data.categoryId,
+      backgroundMode: data.backgroundMode,
+      backgroundId: data.backgroundId,
+      accessMode: data.accessMode,
+      status: data.status,
+    },
+  })
+  revalidatePath(`/admin/pages/${id}`)
+  revalidatePath(`/${data.slug}`)
+}
