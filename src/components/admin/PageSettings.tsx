@@ -16,6 +16,7 @@ interface Props extends SettingsState {
   backgrounds: { id: string; filename: string }[]
   saving: boolean
   saved: boolean
+  saveError?: string | null
   onChange: (updates: Partial<SettingsState>) => void
   onSave: () => void
 }
@@ -33,6 +34,7 @@ export function PageSettings({
   backgrounds,
   saving,
   saved,
+  saveError,
   onChange,
   onSave,
 }: Props) {
@@ -150,6 +152,9 @@ export function PageSettings({
         >
           Save
         </button>
+        {saveError && (
+          <p className="text-xs text-red-600 break-words">{saveError}</p>
+        )}
       </div>
     </div>
   )

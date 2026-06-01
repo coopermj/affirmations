@@ -60,6 +60,7 @@ export function PageEditor({ page, categories, backgrounds, fonts }: Props) {
   })
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(true)
+  const [saveError, setSaveError] = useState<string | null>(null)
   const [preview, setPreview] = useState(false)
   const saveTimer = useRef<NodeJS.Timeout>()
 
@@ -78,12 +79,15 @@ export function PageEditor({ page, categories, backgrounds, fonts }: Props) {
       clearTimeout(saveTimer.current)
       saveTimer.current = setTimeout(async () => {
         setSaving(true)
+        setSaveError(null)
         try {
           await savePage(page.id, {
             ...settingsRef.current,
             content: ed.getJSON() as Record<string, unknown>,
           })
           setSaved(true)
+        } catch (err) {
+          setSaveError(err instanceof Error ? err.message : 'Save failed')
         } finally {
           setSaving(false)
         }
@@ -100,12 +104,15 @@ export function PageEditor({ page, categories, backgrounds, fonts }: Props) {
     if (!editor) return
     clearTimeout(saveTimer.current)
     setSaving(true)
+    setSaveError(null)
     try {
       await savePage(page.id, {
         ...settings,
         content: editor.getJSON() as Record<string, unknown>,
       })
       setSaved(true)
+    } catch (err) {
+      setSaveError(err instanceof Error ? err.message : 'Save failed')
     } finally {
       setSaving(false)
     }
@@ -151,6 +158,7 @@ export function PageEditor({ page, categories, backgrounds, fonts }: Props) {
             backgrounds={backgrounds}
             saving={saving}
             saved={saved}
+            saveError={saveError}
             onChange={handleSettingsChange}
             onSave={handleSave}
           />

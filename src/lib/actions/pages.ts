@@ -46,19 +46,25 @@ export async function savePage(
   },
 ) {
   await requireEditor()
-  await db.page.update({
-    where: { id },
-    data: {
-      title: data.title,
-      slug: data.slug,
-      content: data.content as never,
-      categoryId: data.categoryId,
-      backgroundMode: data.backgroundMode,
-      backgroundId: data.backgroundId,
-      accessMode: data.accessMode,
-      status: data.status,
-    },
-  })
+  try {
+    await db.page.update({
+      where: { id },
+      data: {
+        title: data.title,
+        slug: data.slug,
+        content: data.content as never,
+        categoryId: data.categoryId,
+        backgroundMode: data.backgroundMode,
+        backgroundId: data.backgroundId,
+        accessMode: data.accessMode,
+        status: data.status,
+      },
+    })
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e)
+    console.error(`[savePage] update failed for ${id}:`, msg)
+    throw new Error(msg)
+  }
   revalidatePath(`/admin/pages/${id}`)
   revalidatePath(`/${data.slug}`)
 }
