@@ -21,7 +21,10 @@ export function FontUploader() {
           contentType: file.type || 'application/octet-stream',
         }),
       })
-      if (!res.ok) throw new Error((await res.json()).error ?? 'Presign failed')
+      if (!res.ok) {
+        const msg = await res.json().then(d => d.error).catch(() => null)
+        throw new Error(msg ?? `Presign failed (${res.status})`)
+      }
       const { url, publicUrl } = await res.json()
 
       const upload = await fetch(url, { method: 'PUT', body: file })

@@ -1,6 +1,27 @@
 import { S3Client, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 
+const REQUIRED_VARS = [
+  'R2_ACCOUNT_ID',
+  'R2_ACCESS_KEY_ID',
+  'R2_SECRET_ACCESS_KEY',
+  'R2_BUCKET_NAME',
+  'R2_PUBLIC_URL',
+] as const
+
+/** True when all R2 environment variables are present. */
+export function isR2Configured(): boolean {
+  return REQUIRED_VARS.every(v => !!process.env[v])
+}
+
+/** Throws a clear error if R2 is not configured. */
+export function assertR2Configured(): void {
+  const missing = REQUIRED_VARS.filter(v => !process.env[v])
+  if (missing.length > 0) {
+    throw new Error(`File storage is not configured (missing: ${missing.join(', ')})`)
+  }
+}
+
 const r2 = new S3Client({
   region: 'auto',
   endpoint: `https://${process.env.R2_ACCOUNT_ID!}.r2.cloudflarestorage.com`,
