@@ -39,8 +39,9 @@ export async function savePage(
     slug: string
     content: Record<string, unknown>
     categoryId: string | null
-    backgroundMode: 'SPECIFIC' | 'CATEGORY_RANDOM' | 'DOMAIN_RANDOM'
+    backgroundMode: 'SPECIFIC' | 'CATEGORY_RANDOM' | 'DOMAIN_RANDOM' | 'GRADIENT'
     backgroundId: string | null
+    backgroundGradient: string | null
     accessMode: 'PUBLIC' | 'PRIVATE'
     status: 'DRAFT' | 'PUBLISHED'
   },
@@ -50,6 +51,10 @@ export async function savePage(
   // A specific background only applies in SPECIFIC mode. In any other mode,
   // force it null so a stale selection never gets persisted.
   let backgroundId = data.backgroundMode === 'SPECIFIC' ? data.backgroundId : null
+
+  // A gradient only applies in GRADIENT mode.
+  const backgroundGradient =
+    data.backgroundMode === 'GRADIENT' ? data.backgroundGradient : null
 
   // Guard against a background that was deleted (or never existed): writing a
   // dangling id would violate the Page_backgroundId_fkey constraint.
@@ -81,6 +86,7 @@ export async function savePage(
         categoryId,
         backgroundMode: data.backgroundMode,
         backgroundId,
+        backgroundGradient,
         accessMode: data.accessMode,
         status: data.status,
       },

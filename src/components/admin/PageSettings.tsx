@@ -1,11 +1,14 @@
 'use client'
 
+import { GRADIENTS, gradientCss } from '@/lib/gradients'
+
 interface SettingsState {
   title: string
   slug: string
   categoryId: string | null
-  backgroundMode: 'SPECIFIC' | 'CATEGORY_RANDOM' | 'DOMAIN_RANDOM'
+  backgroundMode: 'SPECIFIC' | 'CATEGORY_RANDOM' | 'DOMAIN_RANDOM' | 'GRADIENT'
   backgroundId: string | null
+  backgroundGradient: string | null
   accessMode: 'PUBLIC' | 'PRIVATE'
   status: 'DRAFT' | 'PUBLISHED'
 }
@@ -27,6 +30,7 @@ export function PageSettings({
   categoryId,
   backgroundMode,
   backgroundId,
+  backgroundGradient,
   accessMode,
   privateToken,
   status,
@@ -92,6 +96,7 @@ export function PageSettings({
           <option value="DOMAIN_RANDOM">Random from site</option>
           <option value="CATEGORY_RANDOM">Random from category</option>
           <option value="SPECIFIC">Specific image</option>
+          <option value="GRADIENT">Gradient</option>
         </select>
         {backgroundMode === 'SPECIFIC' && (
           <select
@@ -104,6 +109,27 @@ export function PageSettings({
               <option key={b.id} value={b.id}>{b.filename}</option>
             ))}
           </select>
+        )}
+        {backgroundMode === 'GRADIENT' && (
+          <div className="mt-2 grid grid-cols-4 gap-1.5">
+            {GRADIENTS.map(g => {
+              const active = (backgroundGradient ?? GRADIENTS[0].key) === g.key
+              return (
+                <button
+                  key={g.key}
+                  type="button"
+                  title={g.label}
+                  onClick={() => onChange({ backgroundGradient: g.key })}
+                  className={`h-9 rounded-md transition ${
+                    active
+                      ? 'ring-2 ring-clay-400 ring-offset-1'
+                      : 'ring-1 ring-line hover:ring-clay-300'
+                  }`}
+                  style={{ background: gradientCss(g.key) }}
+                />
+              )
+            })}
+          </div>
         )}
       </div>
 

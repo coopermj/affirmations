@@ -9,6 +9,7 @@ import TextAlign from '@tiptap/extension-text-align'
 import Underline from '@tiptap/extension-underline'
 import { FontSize, Flourish } from '@/lib/tiptap-extensions'
 import { savePage } from '@/lib/actions/pages'
+import { gradientCss } from '@/lib/gradients'
 import Link from 'next/link'
 import { EditorToolbar } from './EditorToolbar'
 import { PageSettings } from './PageSettings'
@@ -19,8 +20,9 @@ interface PageData {
   slug: string
   content: Record<string, unknown>
   categoryId: string | null
-  backgroundMode: 'SPECIFIC' | 'CATEGORY_RANDOM' | 'DOMAIN_RANDOM'
+  backgroundMode: 'SPECIFIC' | 'CATEGORY_RANDOM' | 'DOMAIN_RANDOM' | 'GRADIENT'
   backgroundId: string | null
+  backgroundGradient: string | null
   accessMode: 'PUBLIC' | 'PRIVATE'
   privateToken: string
   status: 'DRAFT' | 'PUBLISHED'
@@ -63,6 +65,7 @@ export function PageEditor({ page, categories, backgrounds, fonts }: Props) {
     categoryId: page.categoryId,
     backgroundMode: page.backgroundMode,
     backgroundId: page.backgroundId,
+    backgroundGradient: page.backgroundGradient,
     accessMode: page.accessMode,
     status: page.status,
   })
@@ -132,7 +135,7 @@ export function PageEditor({ page, categories, backgrounds, fonts }: Props) {
 
   const previewStyle = specificBg
     ? { backgroundImage: `url("${specificBg}")`, backgroundSize: 'cover' as const, backgroundPosition: 'center' as const }
-    : { background: GRADIENT_BG }
+    : { background: settings.backgroundMode === 'GRADIENT' ? gradientCss(settings.backgroundGradient) : GRADIENT_BG }
 
   return (
     <div>
@@ -197,7 +200,7 @@ export function PageEditor({ page, categories, backgrounds, fonts }: Props) {
           >
             Close ✕
           </button>
-          {!specificBg && (
+          {settings.backgroundMode !== 'SPECIFIC' && settings.backgroundMode !== 'GRADIENT' && (
             <p className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/50 text-xs">
               Background is random per visit
             </p>

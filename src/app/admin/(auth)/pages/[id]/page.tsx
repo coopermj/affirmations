@@ -31,6 +31,7 @@ export default async function PageEditorPage({
         categoryId: page.categoryId,
         backgroundMode: page.backgroundMode,
         backgroundId: page.backgroundId,
+        backgroundGradient: page.backgroundGradient,
         accessMode: page.accessMode,
         privateToken: page.privateToken,
         status: page.status,

@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import { db } from '@/lib/db'
-import { selectBackground } from '@/lib/backgrounds'
+import { resolveBackground } from '@/lib/backgrounds'
 import { renderContent } from '@/lib/tiptap-renderer'
 import { AffirmationPage } from '@/components/AffirmationPage'
 
@@ -21,17 +21,14 @@ export default async function SlugPage({
   if (!page) notFound()
   if (page.accessMode === 'PRIVATE' && searchParams.t !== page.privateToken) notFound()
 
-  const background = await selectBackground(
-    page.backgroundMode,
-    page.backgroundId,
-    page.categoryId,
-  )
+  const { url, gradient } = await resolveBackground(page)
   const html = renderContent(page.content as Record<string, unknown>)
 
   return (
     <AffirmationPage
       html={html}
-      backgroundUrl={background?.r2Url ?? null}
+      backgroundUrl={url}
+      backgroundGradient={gradient}
       defaultFontFamily={null}
     />
   )

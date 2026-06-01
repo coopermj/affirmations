@@ -1,5 +1,27 @@
 import { db } from '@/lib/db'
-import type { Background } from '@prisma/client'
+import type { Background, BackgroundMode } from '@prisma/client'
+import { gradientCss } from '@/lib/gradients'
+
+/**
+ * Resolve the background to render for a page: a gradient (GRADIENT mode) or an
+ * image URL (all other modes). Returns at most one of the two.
+ */
+export async function resolveBackground(page: {
+  backgroundMode: BackgroundMode
+  backgroundId: string | null
+  categoryId: string | null
+  backgroundGradient: string | null
+}): Promise<{ url: string | null; gradient: string | null }> {
+  if (page.backgroundMode === 'GRADIENT') {
+    return { url: null, gradient: gradientCss(page.backgroundGradient) }
+  }
+  const bg = await selectBackground(
+    page.backgroundMode as 'SPECIFIC' | 'CATEGORY_RANDOM' | 'DOMAIN_RANDOM',
+    page.backgroundId,
+    page.categoryId,
+  )
+  return { url: bg?.r2Url ?? null, gradient: null }
+}
 
 export async function selectBackground(
   mode: 'SPECIFIC' | 'CATEGORY_RANDOM' | 'DOMAIN_RANDOM',

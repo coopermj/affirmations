@@ -21,6 +21,7 @@ enum BackgroundMode {
   SPECIFIC
   CATEGORY_RANDOM
   DOMAIN_RANDOM
+  GRADIENT
 }
 
 enum AccessMode {
@@ -96,9 +97,10 @@ model Page {
   content        Json
   categoryId     String?
   category       Category?      @relation(fields: [categoryId], references: [id])
-  backgroundMode BackgroundMode @default(DOMAIN_RANDOM)
-  backgroundId   String?
-  background     Background?    @relation(fields: [backgroundId], references: [id])
+  backgroundMode     BackgroundMode @default(DOMAIN_RANDOM)
+  backgroundId       String?
+  background         Background?    @relation(fields: [backgroundId], references: [id])
+  backgroundGradient String?        // gradient preset key, used when backgroundMode = GRADIENT
   accessMode     AccessMode     @default(PUBLIC)
   privateToken   String         @default(uuid())
   status         PageStatus     @default(DRAFT)

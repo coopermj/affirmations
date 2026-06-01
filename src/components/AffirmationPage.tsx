@@ -1,23 +1,29 @@
 interface Props {
   html: string
   backgroundUrl: string | null
+  backgroundGradient?: string | null
   defaultFontFamily: string | null
 }
 
-// Warm "last light" gradient for pages without a specific image.
+// Warm "last light" gradient for pages without a specific image or gradient.
 const FALLBACK_GRADIENT =
   'radial-gradient(120% 120% at 50% 0%, #8a4b38 0%, #5e3550 45%, #2c2236 100%)'
 
-export function AffirmationPage({ html, backgroundUrl, defaultFontFamily }: Props) {
+export function AffirmationPage({
+  html,
+  backgroundUrl,
+  backgroundGradient,
+  defaultFontFamily,
+}: Props) {
   return (
     <div className="fixed inset-0 overflow-hidden">
-      {/* Background layer */}
+      {/* Background layer: image > gradient > fallback */}
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={
           backgroundUrl
             ? { backgroundImage: `url("${backgroundUrl}")` }
-            : { background: FALLBACK_GRADIENT }
+            : { background: backgroundGradient || FALLBACK_GRADIENT }
         }
       />
 
