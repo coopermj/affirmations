@@ -1,4 +1,4 @@
-import { Extension, Node, mergeAttributes } from '@tiptap/core'
+import { Extension, Node, mergeAttributes, type CommandProps } from '@tiptap/core'
 
 // Augment Tiptap's command types so TypeScript knows about our custom commands
 declare module '@tiptap/core' {
@@ -40,11 +40,11 @@ export const FontSize = Extension.create({
     return {
       setFontSize:
         (size: string) =>
-        ({ chain }: any) =>
+        ({ chain }: CommandProps) =>
           chain().setMark('textStyle', { fontSize: size }).run(),
       unsetFontSize:
         () =>
-        ({ chain }: any) =>
+        ({ chain }: CommandProps) =>
           chain()
             .setMark('textStyle', { fontSize: null })
             .removeEmptyTextStyle()
@@ -77,7 +77,7 @@ export const Flourish = Node.create({
     return {
       insertFlourish:
         (symbol: string) =>
-        ({ chain }: any) =>
+        ({ chain }: CommandProps) =>
           chain().insertContent({ type: 'flourish', attrs: { symbol } }).run(),
     }
   },
