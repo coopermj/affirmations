@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import { PrismaPg } from '@prisma/adapter-pg'
 import bcrypt from 'bcryptjs'
+import { randomBytes } from 'crypto'
 import * as fs from 'fs'
 import * as path from 'path'
 
@@ -19,18 +20,32 @@ const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! })
 const db = new PrismaClient({ adapter })
 
 async function main() {
-  const passwordHash = await bcrypt.hash('admin123', 12)
+  const adminEmail = process.env.SEED_ADMIN_EMAIL || 'admin@example.com'
+  // Never hardcode a password. Use SEED_ADMIN_PASSWORD if provided, otherwise
+  // generate a strong random one and print it once so it can be recorded.
+  let adminPassword = process.env.SEED_ADMIN_PASSWORD
+  let generated = false
+  if (!adminPassword) {
+    adminPassword = randomBytes(12).toString('base64url')
+    generated = true
+  }
+  const passwordHash = await bcrypt.hash(adminPassword, 12)
 
   const admin = await db.user.upsert({
-    where: { email: 'admin@example.com' },
+    where: { email: adminEmail },
     update: {},
     create: {
-      email: 'admin@example.com',
+      email: adminEmail,
       name: 'Admin',
       passwordHash,
       role: 'ADMIN',
     },
   })
+
+  if (generated && admin) {
+    console.log(`\n  Admin account: ${adminEmail}`)
+    console.log(`  Generated password (save this now): ${adminPassword}\n`)
+  }
 
   const encouragement = await db.category.upsert({
     where: { slug: 'encouragement' },

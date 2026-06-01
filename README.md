@@ -72,7 +72,7 @@ npx prisma db seed           # seed an admin user + sample data
 npm run dev
 ```
 
-Open http://localhost:3000. Sign in at `/admin/login` with the seeded credentials (`admin@example.com` / `admin123` — change these in production).
+Open http://localhost:3000. The seed creates an admin account (`SEED_ADMIN_EMAIL`, default `admin@example.com`). Set `SEED_ADMIN_PASSWORD` before seeding, or the seed generates a strong random password and prints it once — sign in with that at `/admin/login`.
 
 ### Environment variables
 
@@ -158,6 +158,6 @@ docs/superpowers/          # design spec and implementation plans
 
 ---
 
-## Default seed credentials
+## Seed admin account
 
-`admin@example.com` / `admin123` — **change these before any real use** (rotate the password and create your own admin via `/admin/users`).
+The seed creates an admin user from `SEED_ADMIN_EMAIL` (default `admin@example.com`) and `SEED_ADMIN_PASSWORD`. If no password is provided, a strong random one is generated and printed once during seeding — record it. No default password is stored in the codebase.

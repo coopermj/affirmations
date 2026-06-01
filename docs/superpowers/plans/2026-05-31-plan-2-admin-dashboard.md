@@ -238,7 +238,7 @@ npm run dev
 
 Open `http://localhost:3000/admin` — should redirect to login.
 Open `http://localhost:3000/admin/login` — should show the login form.
-Sign in with `admin@example.com` / `admin123` — should redirect to `/admin` (404 is fine, the dashboard page doesn't exist yet).
+Sign in with `admin@example.com` with the seeded password — should redirect to `/admin` (404 is fine, the dashboard page doesn't exist yet).
 
 - [ ] **Step 5: Commit**
 
