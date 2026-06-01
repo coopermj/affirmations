@@ -46,6 +46,31 @@ export async function savePage(
   },
 ) {
   await requireEditor()
+
+  // A specific background only applies in SPECIFIC mode. In any other mode,
+  // force it null so a stale selection never gets persisted.
+  let backgroundId = data.backgroundMode === 'SPECIFIC' ? data.backgroundId : null
+
+  // Guard against a background that was deleted (or never existed): writing a
+  // dangling id would violate the Page_backgroundId_fkey constraint.
+  if (backgroundId) {
+    const exists = await db.background.findUnique({
+      where: { id: backgroundId },
+      select: { id: true },
+    })
+    if (!exists) backgroundId = null
+  }
+
+  // Likewise guard the category foreign key.
+  let categoryId = data.categoryId
+  if (categoryId) {
+    const exists = await db.category.findUnique({
+      where: { id: categoryId },
+      select: { id: true },
+    })
+    if (!exists) categoryId = null
+  }
+
   try {
     await db.page.update({
       where: { id },
@@ -53,9 +78,9 @@ export async function savePage(
         title: data.title,
         slug: data.slug,
         content: data.content as never,
-        categoryId: data.categoryId,
+        categoryId,
         backgroundMode: data.backgroundMode,
-        backgroundId: data.backgroundId,
+        backgroundId,
         accessMode: data.accessMode,
         status: data.status,
       },
