@@ -18,6 +18,7 @@ export async function saveBackground(
   r2Url: string,
   mimeType: string,
   isAnimated: boolean,
+  isTiled: boolean,
   categoryIds: string[],
 ) {
   await requireEditor()
@@ -27,6 +28,7 @@ export async function saveBackground(
       r2Url,
       mimeType,
       isAnimated,
+      isTiled,
       categories: {
         create: categoryIds.map(categoryId => ({ categoryId })),
       },

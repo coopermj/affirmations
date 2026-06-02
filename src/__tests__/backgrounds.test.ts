@@ -9,18 +9,18 @@ jest.mock('@/lib/db', () => ({
 }))
 
 import { db } from '@/lib/db'
-import { selectBackground } from '@/lib/backgrounds'
+import { selectBackground, resolveBackground } from '@/lib/backgrounds'
 import type { Background } from '@prisma/client'
 
 const mockBg = db.background as jest.Mocked<typeof db.background>
 
 const bg1: Background = {
   id: 'bg1', filename: 'a.jpg', r2Url: 'https://r2.example.com/a.jpg',
-  mimeType: 'image/jpeg', isAnimated: false, createdAt: new Date(),
+  mimeType: 'image/jpeg', isAnimated: false, isTiled: false, createdAt: new Date(),
 }
 const bg2: Background = {
   id: 'bg2', filename: 'b.gif', r2Url: 'https://r2.example.com/b.gif',
-  mimeType: 'image/gif', isAnimated: true, createdAt: new Date(),
+  mimeType: 'image/gif', isAnimated: true, isTiled: false, createdAt: new Date(),
 }
 
 beforeEach(() => jest.clearAllMocks())
@@ -81,5 +81,33 @@ describe('selectBackground', () => {
       const result = await selectBackground('DOMAIN_RANDOM', null, null)
       expect(result).toBeNull()
     })
+  })
+})
+
+describe('resolveBackground', () => {
+  const page = { backgroundId: 'bg3', categoryId: null, backgroundGradient: null }
+
+  it('reports tiled=true for a tiled specific background', async () => {
+    mockBg.findUnique.mockResolvedValue({ ...bg1, id: 'bg3', isTiled: true })
+    const result = await resolveBackground({ ...page, backgroundMode: 'SPECIFIC' })
+    expect(result).toEqual({ url: bg1.r2Url, gradient: null, tiled: true })
+  })
+
+  it('reports tiled=false for a cover-fit background', async () => {
+    mockBg.findUnique.mockResolvedValue({ ...bg1, id: 'bg3', isTiled: false })
+    const result = await resolveBackground({ ...page, backgroundMode: 'SPECIFIC' })
+    expect(result.tiled).toBe(false)
+  })
+
+  it('never tiles a gradient background', async () => {
+    const result = await resolveBackground({
+      backgroundMode: 'GRADIENT',
+      backgroundId: null,
+      categoryId: null,
+      backgroundGradient: 'last-light',
+    })
+    expect(result.url).toBeNull()
+    expect(result.tiled).toBe(false)
+    expect(result.gradient).toBeTruthy()
   })
 })

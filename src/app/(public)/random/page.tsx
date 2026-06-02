@@ -19,7 +19,7 @@ export default async function RandomPage() {
   const page = pages[0]
   if (!page) notFound()
 
-  const { url, gradient } = await resolveBackground(page)
+  const { url, gradient, tiled } = await resolveBackground(page)
   const html = renderContent(page.content as Record<string, unknown>)
 
   return (
@@ -27,6 +27,7 @@ export default async function RandomPage() {
       html={html}
       backgroundUrl={url}
       backgroundGradient={gradient}
+      backgroundTiled={tiled}
       textEffect={page.textEffect}
       defaultFontFamily={null}
     />

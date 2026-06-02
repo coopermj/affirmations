@@ -33,19 +33,35 @@ export default async function BackgroundsPage() {
           return (
             <div key={bg.id} className="relative group bg-white border border-gray-200 rounded-lg overflow-hidden">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={bg.r2Url}
-                alt={bg.filename}
-                className="w-full aspect-video object-cover"
-              />
+              {bg.isTiled ? (
+                <div
+                  className="w-full aspect-video"
+                  style={{
+                    backgroundImage: `url("${bg.r2Url}")`,
+                    backgroundRepeat: 'repeat',
+                    backgroundSize: 'auto',
+                  }}
+                />
+              ) : (
+                <img
+                  src={bg.r2Url}
+                  alt={bg.filename}
+                  className="w-full aspect-video object-cover"
+                />
+              )}
               <div className="p-2">
                 <p className="text-xs text-gray-600 truncate">{bg.filename}</p>
                 <p className="text-xs text-gray-400">
                   {bg.categories.map(c => c.category.name).join(', ') || 'No category'}
                 </p>
-                {bg.isAnimated && (
-                  <span className="text-xs bg-purple-100 text-purple-600 px-1 rounded">animated</span>
-                )}
+                <div className="flex flex-wrap gap-1">
+                  {bg.isAnimated && (
+                    <span className="text-xs bg-purple-100 text-purple-600 px-1 rounded">animated</span>
+                  )}
+                  {bg.isTiled && (
+                    <span className="text-xs bg-sky-100 text-sky-600 px-1 rounded">tiled</span>
+                  )}
+                </div>
               </div>
               <form
                 action={deleteBackground.bind(null, bg.id, r2Key)}

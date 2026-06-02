@@ -62,6 +62,7 @@ model Background {
   r2Url      String
   mimeType   String
   isAnimated Boolean              @default(false)
+  isTiled    Boolean              @default(false) // repeat seamlessly instead of cover-fitting
   createdAt  DateTime             @default(now())
   pages      Page[]
   categories BackgroundCategory[]

@@ -11,16 +11,16 @@ export async function resolveBackground(page: {
   backgroundId: string | null
   categoryId: string | null
   backgroundGradient: string | null
-}): Promise<{ url: string | null; gradient: string | null }> {
+}): Promise<{ url: string | null; gradient: string | null; tiled: boolean }> {
   if (page.backgroundMode === 'GRADIENT') {
-    return { url: null, gradient: gradientCss(page.backgroundGradient) }
+    return { url: null, gradient: gradientCss(page.backgroundGradient), tiled: false }
   }
   const bg = await selectBackground(
     page.backgroundMode as 'SPECIFIC' | 'CATEGORY_RANDOM' | 'DOMAIN_RANDOM',
     page.backgroundId,
     page.categoryId,
   )
-  return { url: bg?.r2Url ?? null, gradient: null }
+  return { url: bg?.r2Url ?? null, gradient: null, tiled: bg?.isTiled ?? false }
 }
 
 export async function selectBackground(

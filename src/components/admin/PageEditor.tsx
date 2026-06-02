@@ -33,7 +33,7 @@ interface PageData {
 interface Props {
   page: PageData
   categories: { id: string; name: string }[]
-  backgrounds: { id: string; filename: string; r2Url: string }[]
+  backgrounds: { id: string; filename: string; r2Url: string; isTiled: boolean }[]
   fonts: { id: string; name: string; type: string }[]
 }
 
@@ -133,11 +133,13 @@ export function PageEditor({ page, categories, backgrounds, fonts }: Props) {
   }
 
   const specificBg = settings.backgroundMode === 'SPECIFIC' && settings.backgroundId
-    ? backgrounds.find(b => b.id === settings.backgroundId)?.r2Url
+    ? backgrounds.find(b => b.id === settings.backgroundId)
     : undefined
 
   const previewStyle = specificBg
-    ? { backgroundImage: `url("${specificBg}")`, backgroundSize: 'cover' as const, backgroundPosition: 'center' as const }
+    ? specificBg.isTiled
+      ? { backgroundImage: `url("${specificBg.r2Url}")`, backgroundRepeat: 'repeat' as const, backgroundSize: 'auto' as const }
+      : { backgroundImage: `url("${specificBg.r2Url}")`, backgroundSize: 'cover' as const, backgroundPosition: 'center' as const }
     : { background: settings.backgroundMode === 'GRADIENT' ? gradientCss(settings.backgroundGradient) : GRADIENT_BG }
 
   return (

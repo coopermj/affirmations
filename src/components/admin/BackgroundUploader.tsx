@@ -14,6 +14,7 @@ interface Props {
 export function BackgroundUploader({ categories }: Props) {
   const [file, setFile] = useState<File | null>(null)
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+  const [isTiled, setIsTiled] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState('')
 
@@ -47,10 +48,11 @@ export function BackgroundUploader({ categories }: Props) {
       if (!upload.ok) throw new Error('Upload to R2 failed')
 
       const isAnimated = file.type === 'image/gif'
-      await saveBackground(file.name, key, publicUrl, file.type, isAnimated, selectedCategories)
+      await saveBackground(file.name, key, publicUrl, file.type, isAnimated, isTiled, selectedCategories)
 
       setFile(null)
       setSelectedCategories([])
+      setIsTiled(false)
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Upload failed')
     } finally {
@@ -86,6 +88,15 @@ export function BackgroundUploader({ categories }: Props) {
             </div>
           </div>
         )}
+        <label className="flex items-center gap-2 text-xs text-gray-600 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={isTiled}
+            onChange={e => setIsTiled(e.target.checked)}
+            className="rounded"
+          />
+          Tile (repeat seamlessly) — for patterns, not photos
+        </label>
         {error && <p className="text-red-600 text-xs">{error}</p>}
         <button
           onClick={handleUpload}

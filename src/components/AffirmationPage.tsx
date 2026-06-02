@@ -4,6 +4,7 @@ interface Props {
   html: string
   backgroundUrl: string | null
   backgroundGradient?: string | null
+  backgroundTiled?: boolean
   textEffect?: string | null
   defaultFontFamily: string | null
 }
@@ -16,17 +17,32 @@ export function AffirmationPage({
   html,
   backgroundUrl,
   backgroundGradient,
+  backgroundTiled,
   textEffect,
   defaultFontFamily,
 }: Props) {
+  // Tiled patterns repeat at their natural size; everything else cover-fits.
+  const imageStyle: React.CSSProperties = backgroundTiled
+    ? {
+        backgroundImage: `url("${backgroundUrl}")`,
+        backgroundRepeat: 'repeat',
+        backgroundSize: 'auto',
+      }
+    : {
+        backgroundImage: `url("${backgroundUrl}")`,
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }
+
   return (
     <div className="fixed inset-0 overflow-hidden">
       {/* Background layer: image > gradient > fallback */}
       <div
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute inset-0"
         style={
           backgroundUrl
-            ? { backgroundImage: `url("${backgroundUrl}")` }
+            ? imageStyle
             : { background: backgroundGradient || FALLBACK_GRADIENT }
         }
       />

@@ -21,7 +21,7 @@ export default async function SlugPage({
   if (!page) notFound()
   if (page.accessMode === 'PRIVATE' && searchParams.t !== page.privateToken) notFound()
 
-  const { url, gradient } = await resolveBackground(page)
+  const { url, gradient, tiled } = await resolveBackground(page)
   const html = renderContent(page.content as Record<string, unknown>)
 
   return (
@@ -29,6 +29,7 @@ export default async function SlugPage({
       html={html}
       backgroundUrl={url}
       backgroundGradient={gradient}
+      backgroundTiled={tiled}
       textEffect={page.textEffect}
       defaultFontFamily={null}
     />
