@@ -36,6 +36,7 @@ export default async function CategoryRandomPage({
       html={html}
       backgroundUrl={url}
       backgroundGradient={gradient}
+      textEffect={page.textEffect}
       defaultFontFamily={null}
     />
   )

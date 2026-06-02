@@ -32,6 +32,7 @@ export default async function PageEditorPage({
         backgroundMode: page.backgroundMode,
         backgroundId: page.backgroundId,
         backgroundGradient: page.backgroundGradient,
+        textEffect: page.textEffect,
         accessMode: page.accessMode,
         privateToken: page.privateToken,
         status: page.status,

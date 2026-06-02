@@ -4,6 +4,7 @@ import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { isTextEffect, DEFAULT_TEXT_EFFECT } from '@/lib/text-effects'
 
 async function requireEditor() {
   const session = await getServerSession(authOptions)
@@ -42,6 +43,7 @@ export async function savePage(
     backgroundMode: 'SPECIFIC' | 'CATEGORY_RANDOM' | 'DOMAIN_RANDOM' | 'GRADIENT'
     backgroundId: string | null
     backgroundGradient: string | null
+    textEffect: string
     accessMode: 'PUBLIC' | 'PRIVATE'
     status: 'DRAFT' | 'PUBLISHED'
   },
@@ -55,6 +57,9 @@ export async function savePage(
   // A gradient only applies in GRADIENT mode.
   const backgroundGradient =
     data.backgroundMode === 'GRADIENT' ? data.backgroundGradient : null
+
+  // Only persist a known text-effect key; fall back to the default otherwise.
+  const textEffect = isTextEffect(data.textEffect) ? data.textEffect : DEFAULT_TEXT_EFFECT
 
   // Guard against a background that was deleted (or never existed): writing a
   // dangling id would violate the Page_backgroundId_fkey constraint.
@@ -87,6 +92,7 @@ export async function savePage(
         backgroundMode: data.backgroundMode,
         backgroundId,
         backgroundGradient,
+        textEffect,
         accessMode: data.accessMode,
         status: data.status,
       },

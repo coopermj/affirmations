@@ -27,6 +27,7 @@ export default async function RandomPage() {
       html={html}
       backgroundUrl={url}
       backgroundGradient={gradient}
+      textEffect={page.textEffect}
       defaultFontFamily={null}
     />
   )

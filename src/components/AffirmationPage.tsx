@@ -1,7 +1,10 @@
+import { textEffectClass } from '@/lib/text-effects'
+
 interface Props {
   html: string
   backgroundUrl: string | null
   backgroundGradient?: string | null
+  textEffect?: string | null
   defaultFontFamily: string | null
 }
 
@@ -13,6 +16,7 @@ export function AffirmationPage({
   html,
   backgroundUrl,
   backgroundGradient,
+  textEffect,
   defaultFontFamily,
 }: Props) {
   return (
@@ -47,7 +51,7 @@ export function AffirmationPage({
         }}
       >
         <div
-          className="affirmation-content animate-[fadein_1.1s_ease-out]"
+          className={`affirmation-content ${textEffectClass(textEffect)} animate-[fadein_1.1s_ease-out]`}
           style={defaultFontFamily ? { fontFamily: defaultFontFamily } : undefined}
           dangerouslySetInnerHTML={{ __html: html }}
         />

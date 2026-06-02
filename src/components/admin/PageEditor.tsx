@@ -10,6 +10,7 @@ import Underline from '@tiptap/extension-underline'
 import { FontSize, Flourish } from '@/lib/tiptap-extensions'
 import { savePage } from '@/lib/actions/pages'
 import { gradientCss } from '@/lib/gradients'
+import { textEffectClass } from '@/lib/text-effects'
 import Link from 'next/link'
 import { EditorToolbar } from './EditorToolbar'
 import { PageSettings } from './PageSettings'
@@ -23,6 +24,7 @@ interface PageData {
   backgroundMode: 'SPECIFIC' | 'CATEGORY_RANDOM' | 'DOMAIN_RANDOM' | 'GRADIENT'
   backgroundId: string | null
   backgroundGradient: string | null
+  textEffect: string
   accessMode: 'PUBLIC' | 'PRIVATE'
   privateToken: string
   status: 'DRAFT' | 'PUBLISHED'
@@ -66,6 +68,7 @@ export function PageEditor({ page, categories, backgrounds, fonts }: Props) {
     backgroundMode: page.backgroundMode,
     backgroundId: page.backgroundId,
     backgroundGradient: page.backgroundGradient,
+    textEffect: page.textEffect,
     accessMode: page.accessMode,
     status: page.status,
   })
@@ -191,7 +194,7 @@ export function PageEditor({ page, categories, backgrounds, fonts }: Props) {
           style={previewStyle}
         >
           <div
-            className="affirmation-content"
+            className={`affirmation-content ${textEffectClass(settings.textEffect)}`}
             dangerouslySetInnerHTML={{ __html: editor?.getHTML() ?? '' }}
           />
           <button

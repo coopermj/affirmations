@@ -19,7 +19,36 @@
   font-weight: 380;
   line-height: 1.28;
   letter-spacing: -0.01em;
+}
+
+/* ---- Text legibility treatments (see src/lib/text-effects.ts) ----
+   Applied as a modifier class on .affirmation-content so the same content
+   reads cleanly over light, dark, or busy photographic backgrounds. */
+
+.text-effect-shadow {
   text-shadow: 0 1px 30px rgba(0, 0, 0, 0.35), 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.text-effect-strong-shadow {
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.55), 0 2px 10px rgba(0, 0, 0, 0.6),
+    0 4px 24px rgba(0, 0, 0, 0.5);
+}
+
+/* Stroke painted behind the fill so glyph shapes stay intact. paint-order is
+   supported in modern Safari/Chrome (incl. iOS), which is the target here. */
+.text-effect-outline {
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.9);
+  paint-order: stroke fill;
+}
+
+.text-effect-outline-shadow {
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.9);
+  paint-order: stroke fill;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.text-effect-none {
+  text-shadow: none;
 }
 
 .affirmation-content p {

@@ -101,6 +101,7 @@ model Page {
   backgroundId       String?
   background         Background?    @relation(fields: [backgroundId], references: [id])
   backgroundGradient String?        // gradient preset key, used when backgroundMode = GRADIENT
+  textEffect     String         @default("shadow") // legibility treatment key (see src/lib/text-effects.ts)
   accessMode     AccessMode     @default(PUBLIC)
   privateToken   String         @default(uuid())
   status         PageStatus     @default(DRAFT)

@@ -1,6 +1,7 @@
 'use client'
 
 import { GRADIENTS, gradientCss } from '@/lib/gradients'
+import { TEXT_EFFECTS } from '@/lib/text-effects'
 
 interface SettingsState {
   title: string
@@ -9,6 +10,7 @@ interface SettingsState {
   backgroundMode: 'SPECIFIC' | 'CATEGORY_RANDOM' | 'DOMAIN_RANDOM' | 'GRADIENT'
   backgroundId: string | null
   backgroundGradient: string | null
+  textEffect: string
   accessMode: 'PUBLIC' | 'PRIVATE'
   status: 'DRAFT' | 'PUBLISHED'
 }
@@ -31,6 +33,7 @@ export function PageSettings({
   backgroundMode,
   backgroundId,
   backgroundGradient,
+  textEffect,
   accessMode,
   privateToken,
   status,
@@ -131,6 +134,24 @@ export function PageSettings({
             })}
           </div>
         )}
+      </div>
+
+      {/* Text legibility */}
+      <div>
+        <label className={label}>Text legibility</label>
+        <select
+          value={textEffect}
+          onChange={e => onChange({ textEffect: e.target.value })}
+          className={field}
+        >
+          {TEXT_EFFECTS.map(t => (
+            <option key={t.key} value={t.key}>{t.label}</option>
+          ))}
+        </select>
+        <p className="mt-1 text-xs text-gray-400">
+          {TEXT_EFFECTS.find(t => t.key === textEffect)?.hint ??
+            'Improves contrast over varied backgrounds.'}
+        </p>
       </div>
 
       {/* Access */}

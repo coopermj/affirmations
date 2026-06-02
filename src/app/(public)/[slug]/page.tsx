@@ -29,6 +29,7 @@ export default async function SlugPage({
       html={html}
       backgroundUrl={url}
       backgroundGradient={gradient}
+      textEffect={page.textEffect}
       defaultFontFamily={null}
     />
   )
