@@ -14,6 +14,32 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null
 
+        // Env-defined "break-glass" admin: if ADMIN_EMAIL/ADMIN_PASSWORD are
+        // set in the environment and match, always grant admin access and
+        // self-heal the database record. This guarantees you can never be
+        // locked out as long as you control the Railway variables.
+        const envEmail = process.env.ADMIN_EMAIL
+        const envPassword = process.env.ADMIN_PASSWORD
+        if (
+          envEmail &&
+          envPassword &&
+          credentials.email === envEmail &&
+          credentials.password === envPassword
+        ) {
+          const admin = await db.user.upsert({
+            where: { email: envEmail },
+            update: { role: 'ADMIN' },
+            create: {
+              email: envEmail,
+              name: 'Admin',
+              passwordHash: await bcrypt.hash(envPassword, 12),
+              role: 'ADMIN',
+            },
+          })
+          return { id: admin.id, email: admin.email, name: admin.name, role: admin.role }
+        }
+
+        // Normal database-backed authentication.
         const user = await db.user.findUnique({
           where: { email: credentials.email },
         })
