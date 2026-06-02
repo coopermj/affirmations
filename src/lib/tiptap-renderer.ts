@@ -24,6 +24,20 @@ function escapeHtml(str: string): string {
     .replace(/"/g, '&quot;')
 }
 
+/**
+ * Replace straight quotes with typographic curly quotes.
+ * - " → " (opening) at start or after whitespace/opening bracket, else " (closing)
+ * - ' → ' (opening) in the same opening positions, else ' (apostrophe / closing)
+ * Run before escapeHtml; the curly characters are untouched by escaping.
+ */
+export function smartQuotes(s: string): string {
+  return s
+    .replace(/(^|[\s([{<‘“])"/g, '$1“') // opening double
+    .replace(/"/g, '”') // closing double
+    .replace(/(^|[\s([{<])'/g, '$1‘') // opening single
+    .replace(/'/g, '’') // apostrophe / closing single
+}
+
 function buildStyleFromTextStyleAttrs(attrs: Record<string, unknown>): string {
   const parts: string[] = []
   if (attrs.color && typeof attrs.color === 'string') {
@@ -110,7 +124,10 @@ function renderNode(node: JSONNode): string {
 
     case 'text': {
       const marks = node.marks ?? []
-      const escaped = escapeHtml(node.text ?? '')
+      // Smart quotes everywhere except inline code.
+      const isCode = marks.some(m => m.type === 'code')
+      const raw = node.text ?? ''
+      const escaped = escapeHtml(isCode ? raw : smartQuotes(raw))
       return applyMarksOpen(marks) + escaped + applyMarksClose(marks)
     }
 

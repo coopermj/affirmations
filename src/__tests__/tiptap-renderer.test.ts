@@ -1,6 +1,35 @@
-import { renderContent } from '@/lib/tiptap-renderer'
+import { renderContent, smartQuotes } from '@/lib/tiptap-renderer'
+
+describe('smartQuotes', () => {
+  it('converts double quotes to opening and closing curly quotes', () => {
+    expect(smartQuotes('She said "hello" today')).toBe('She said “hello” today')
+  })
+
+  it('converts apostrophes in contractions', () => {
+    expect(smartQuotes("you're worthy")).toBe('you’re worthy')
+  })
+
+  it('converts a leading single quote to an opening quote', () => {
+    expect(smartQuotes("'tis the season")).toBe('‘tis the season')
+  })
+
+  it('handles a full sentence with mixed quotes', () => {
+    expect(smartQuotes('"You\'re enough," she said.')).toBe('“You’re enough,” she said.')
+  })
+})
 
 describe('renderContent', () => {
+  it('renders curly quotes in affirmation text', () => {
+    const json = {
+      type: 'doc',
+      content: [
+        { type: 'paragraph', content: [{ type: 'text', text: 'You\'re "worthy"' }] },
+      ],
+    }
+    const html = renderContent(json)
+    expect(html).toContain('You’re “worthy”')
+  })
+
   it('renders a plain paragraph', () => {
     const json = {
       type: 'doc',

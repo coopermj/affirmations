@@ -20,6 +20,7 @@ export function AdminNav({ role }: Props) {
 
   const items = [
     { href: '/admin', label: 'Dashboard', exact: true },
+    { href: '/admin/quick', label: 'Quick upload', exact: false },
     { href: '/admin/pages', label: 'Pages', exact: false },
     { href: '/admin/categories', label: 'Categories', exact: false },
     { href: '/admin/backgrounds', label: 'Backgrounds', exact: false },
