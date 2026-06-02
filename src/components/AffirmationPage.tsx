@@ -39,7 +39,13 @@ export function AffirmationPage({
       )}
 
       {/* Content */}
-      <div className="absolute inset-0 flex items-center justify-center px-6 sm:px-10">
+      <div
+        className="absolute inset-0 flex items-center justify-center px-6 sm:px-10"
+        style={{
+          paddingTop: 'max(1.5rem, env(safe-area-inset-top))',
+          paddingBottom: 'max(1.5rem, env(safe-area-inset-bottom))',
+        }}
+      >
         <div
           className="affirmation-content animate-[fadein_1.1s_ease-out]"
           style={defaultFontFamily ? { fontFamily: defaultFontFamily } : undefined}
