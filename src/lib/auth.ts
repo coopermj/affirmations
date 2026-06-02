@@ -26,16 +26,31 @@ export const authOptions: NextAuthOptions = {
           credentials.email === envEmail &&
           credentials.password === envPassword
         ) {
-          const admin = await db.user.upsert({
-            where: { email: envEmail },
-            update: { role: 'ADMIN' },
-            create: {
-              email: envEmail,
-              name: 'Admin',
-              passwordHash: await bcrypt.hash(envPassword, 12),
-              role: 'ADMIN',
-            },
-          })
+          let admin = await db.user.findUnique({ where: { email: envEmail } })
+          if (!admin) {
+            admin = await db.user.create({
+              data: {
+                email: envEmail,
+                name: 'Admin',
+                passwordHash: await bcrypt.hash(envPassword, 12),
+                role: 'ADMIN',
+              },
+            })
+          } else {
+            // Keep the DB password in sync with the Railway variable. This
+            // overwrites any stale password (e.g. the old seed default) so the
+            // env value is the single source of truth.
+            const inSync = await bcrypt.compare(envPassword, admin.passwordHash)
+            if (!inSync || admin.role !== 'ADMIN') {
+              admin = await db.user.update({
+                where: { id: admin.id },
+                data: {
+                  role: 'ADMIN',
+                  ...(inSync ? {} : { passwordHash: await bcrypt.hash(envPassword, 12) }),
+                },
+              })
+            }
+          }
           return { id: admin.id, email: admin.email, name: admin.name, role: admin.role }
         }
 
