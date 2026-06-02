@@ -26,6 +26,14 @@ export async function createUser(formData: FormData) {
 export async function deleteUser(id: string) {
   const session = await requireAdmin()
   if (session.user.id === id) throw new Error('Cannot delete your own account')
+
+  // Pages have a RESTRICT foreign key on their author, so a user with pages
+  // can't be deleted directly. Reassign their pages to the acting admin first
+  // (no content is lost), then delete.
+  await db.page.updateMany({
+    where: { createdById: id },
+    data: { createdById: session.user.id },
+  })
   await db.user.delete({ where: { id } })
   revalidatePath('/admin/users')
 }
