@@ -1,7 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# Superpowers brainstorm files
+# Superpowers notes (brainstorm files, design specs, implementation plans)
 .superpowers/
+docs/superpowers/
 
 # dependencies
 /node_modules
