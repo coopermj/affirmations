@@ -1,13 +1,24 @@
 'use client'
 import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState, Suspense } from 'react'
+import { useState, useEffect, Suspense } from 'react'
+import { startAuthentication, browserSupportsWebAuthn } from '@simplewebauthn/browser'
 
 function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [passkeyLoading, setPasskeyLoading] = useState(false)
+  const [passkeySupported, setPasskeySupported] = useState(false)
+
+  // Detect support after mount to avoid an SSR/client hydration mismatch.
+  useEffect(() => setPasskeySupported(browserSupportsWebAuthn()), [])
+
+  function goToApp() {
+    router.refresh()
+    router.push(searchParams.get('callbackUrl') ?? '/admin')
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -23,9 +34,33 @@ function LoginForm() {
     if (result?.error) {
       setError('Invalid email or password')
     } else {
-      router.refresh()
-      const callbackUrl = searchParams.get('callbackUrl') ?? '/admin'
-      router.push(callbackUrl)
+      goToApp()
+    }
+  }
+
+  async function handlePasskey() {
+    setPasskeyLoading(true)
+    setError('')
+    try {
+      const optRes = await fetch('/api/auth/passkey/authenticate/options', { method: 'POST' })
+      if (!optRes.ok) throw new Error('Could not start passkey sign-in')
+      const optionsJSON = await optRes.json()
+
+      const asseResp = await startAuthentication({ optionsJSON })
+
+      const result = await signIn('passkey', {
+        response: JSON.stringify(asseResp),
+        redirect: false,
+      })
+      if (result?.error) setError('Passkey not recognized. Try again or use your password.')
+      else goToApp()
+    } catch (e) {
+      // Silently ignore user cancellation; surface anything else.
+      if (!(e instanceof Error && /abort|cancel|NotAllowed/i.test(e.message))) {
+        setError('Passkey sign-in failed. Use your password instead.')
+      }
+    } finally {
+      setPasskeyLoading(false)
     }
   }
 
@@ -81,6 +116,25 @@ function LoginForm() {
               {loading ? 'Signing in…' : 'Sign in'}
             </button>
           </form>
+
+          {passkeySupported && (
+            <>
+              <div className="flex items-center gap-3 my-5">
+                <span className="h-px flex-1 bg-line" />
+                <span className="text-xs text-muted">or</span>
+                <span className="h-px flex-1 bg-line" />
+              </div>
+              <button
+                type="button"
+                onClick={handlePasskey}
+                disabled={passkeyLoading}
+                className="w-full py-2.5 px-4 border border-line bg-paper/60 text-ink rounded-lg text-sm font-medium tracking-wide hover:bg-paper disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center justify-center gap-2"
+              >
+                <span aria-hidden>🔑</span>
+                {passkeyLoading ? 'Waiting for device…' : 'Sign in with a passkey'}
+              </button>
+            </>
+          )}
         </div>
       </div>
     </main>

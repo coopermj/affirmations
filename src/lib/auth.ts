@@ -1,7 +1,14 @@
 import type { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import bcrypt from 'bcryptjs'
+import { cookies } from 'next/headers'
+import { verifyAuthenticationResponse } from '@simplewebauthn/server'
+import type {
+  AuthenticationResponseJSON,
+  AuthenticatorTransportFuture,
+} from '@simplewebauthn/server'
 import { db } from '@/lib/db'
+import { getRpConfig, AUTH_CHALLENGE_COOKIE, challengeCookieOptions } from '@/lib/webauthn'
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -63,6 +70,76 @@ export const authOptions: NextAuthOptions = {
         const valid = await bcrypt.compare(credentials.password, user.passwordHash)
         if (!valid) return null
 
+        return { id: user.id, email: user.email, name: user.name, role: user.role }
+      },
+    }),
+
+    // Passkey (WebAuthn) login. The client first fetches options from
+    // /api/auth/passkey/authenticate/options (which sets the challenge cookie),
+    // runs the browser ceremony, then calls signIn('passkey', { response }).
+    // We verify the assertion here and return the matched user → JWT session.
+    CredentialsProvider({
+      id: 'passkey',
+      name: 'Passkey',
+      credentials: { response: { label: 'response', type: 'text' } },
+      async authorize(credentials) {
+        if (!credentials?.response) return null
+
+        const jar = cookies()
+        const expectedChallenge = jar.get(AUTH_CHALLENGE_COOKIE)?.value
+        if (!expectedChallenge) return null
+
+        let response: AuthenticationResponseJSON
+        try {
+          response = JSON.parse(credentials.response)
+        } catch {
+          return null
+        }
+
+        const authenticator = await db.authenticator.findUnique({
+          where: { credentialId: response.id },
+        })
+        if (!authenticator) return null
+
+        const { rpID, origin } = getRpConfig()
+        let verification
+        try {
+          verification = await verifyAuthenticationResponse({
+            response,
+            expectedChallenge,
+            expectedOrigin: origin,
+            expectedRPID: rpID,
+            requireUserVerification: false,
+            credential: {
+              id: authenticator.credentialId,
+              publicKey: authenticator.publicKey,
+              counter: authenticator.counter,
+              transports: authenticator.transports as AuthenticatorTransportFuture[],
+            },
+          })
+        } catch {
+          return null
+        } finally {
+          // Best-effort single-use: invalidate the challenge after an attempt.
+          try {
+            jar.set(AUTH_CHALLENGE_COOKIE, '', challengeCookieOptions(0))
+          } catch {
+            // cookie mutation may be unavailable in this context; TTL bounds it
+          }
+        }
+
+        if (!verification.verified) return null
+
+        await db.authenticator.update({
+          where: { id: authenticator.id },
+          data: {
+            counter: verification.authenticationInfo.newCounter,
+            lastUsedAt: new Date(),
+          },
+        })
+
+        const user = await db.user.findUnique({ where: { id: authenticator.userId } })
+        if (!user) return null
         return { id: user.id, email: user.email, name: user.name, role: user.role }
       },
     }),
