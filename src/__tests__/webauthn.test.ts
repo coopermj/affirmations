@@ -8,22 +8,22 @@ import {
 describe('resolveRpConfig', () => {
   it('prefers explicit WEBAUTHN_* vars', () => {
     const cfg = resolveRpConfig({
-      WEBAUTHN_RP_ID: 'affirmations.meebles.org',
-      WEBAUTHN_RP_ORIGIN: 'https://affirmations.meebles.org',
+      WEBAUTHN_RP_ID: 'affirmations.example.com',
+      WEBAUTHN_RP_ORIGIN: 'https://affirmations.example.com',
       WEBAUTHN_RP_NAME: 'Affirmations',
       NEXTAUTH_URL: 'https://ignored.example.com',
     })
     expect(cfg).toEqual({
-      rpID: 'affirmations.meebles.org',
-      origin: 'https://affirmations.meebles.org',
+      rpID: 'affirmations.example.com',
+      origin: 'https://affirmations.example.com',
       rpName: 'Affirmations',
     })
   })
 
   it('derives rpID and origin from NEXTAUTH_URL when WEBAUTHN_* are absent', () => {
-    const cfg = resolveRpConfig({ NEXTAUTH_URL: 'https://affirmations.meebles.org' })
-    expect(cfg.rpID).toBe('affirmations.meebles.org')
-    expect(cfg.origin).toBe('https://affirmations.meebles.org')
+    const cfg = resolveRpConfig({ NEXTAUTH_URL: 'https://affirmations.example.com' })
+    expect(cfg.rpID).toBe('affirmations.example.com')
+    expect(cfg.origin).toBe('https://affirmations.example.com')
     expect(cfg.rpName).toBe('Affirmations')
   })
 

@@ -80,8 +80,8 @@ table changes.
 
 Env vars (with fallbacks derived from `NEXTAUTH_URL`):
 
-- `WEBAUTHN_RP_ID` — e.g. `affirmations.meebles.org` (dev: `localhost`)
-- `WEBAUTHN_RP_ORIGIN` — e.g. `https://affirmations.meebles.org` (dev:
+- `WEBAUTHN_RP_ID` — e.g. `affirmations.example.com` (dev: `localhost`)
+- `WEBAUTHN_RP_ORIGIN` — e.g. `https://affirmations.example.com` (dev:
   `http://localhost:3000`)
 - `WEBAUTHN_RP_NAME` — display name, default `"Affirmations"`
 
